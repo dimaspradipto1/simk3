@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             KaryawanSeeder::class,
             LaporanInsidenSeeder::class,
             ObservasiBahayaSeeder::class,
+            Inpeksik3Seeder::class,
+            PelatihanhseSeeder::class,
         ]);
     }
 }

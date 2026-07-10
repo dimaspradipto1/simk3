@@ -26,12 +26,12 @@
             </a>
           </li>
           <li>
-            <a href="components-badges.html">
+            <a href="{{ route('inpeksik3.index') }}">
               <i class="bi bi-circle"></i><span>Inpeksi K3</span>
             </a>
           </li>
           <li>
-            <a href="components-breadcrumbs.html">
+            <a href="{{ route('pelatihanhse.index') }}">
               <i class="bi bi-circle"></i><span>Pelatihan HSE</span>
             </a>
           </li>

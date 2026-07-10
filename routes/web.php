@@ -3,9 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\Inpeksik3Controller;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanInsidenController;
 use App\Http\Controllers\ObservasiBahayaController;
+use App\Http\Controllers\PelatihanhseController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +34,8 @@ Route::middleware('auth', 'checkrole')->group(function () {
     Route::resource('karyawan', KaryawanController::class)->except(['show']);
 
     Route::resource('observasi-bahaya', ObservasiBahayaController::class)->except(['show']);
+
+    Route::resource('inpeksik3', Inpeksik3Controller::class)->except(['show']);
+
+    Route::resource('pelatihanhse', PelatihanhseController::class);
 });
