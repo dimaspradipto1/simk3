@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
@@ -20,6 +21,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+            Alert::success('Login Berhasil', 'Anda berhasil login')
+                ->toToast()
+                ->autoClose(4000)
+                ->timerProgressBar();
             return redirect()->intended(route('dashboard'));
         }
 

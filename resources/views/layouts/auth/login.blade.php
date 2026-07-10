@@ -9,6 +9,7 @@
     <meta content="Sistem Informasi Manajemen K3 - Health, Safety & Environment" name="description">
 
     <!-- Favicons -->
+    <link href="{{ asset('assets/img/hse-logo.svg') }}" rel="icon" type="image/svg+xml">
     <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
@@ -104,17 +105,6 @@
         .auth-brand-content {
             position: relative;
             z-index: 1;
-        }
-
-        .brand-logo-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            background: var(--hse-orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.7rem;
         }
 
         .brand-feature {
@@ -243,9 +233,7 @@
                 <div class="col-lg-6 d-none d-lg-flex auth-brand p-4 flex-column justify-content-between overflow-hidden">
                     <div class="auth-brand-content">
                         <div class="d-flex align-items-center gap-3 mb-4">
-                            <div class="brand-logo-icon">
-                                <i class="bi bi-shield-check text-white"></i>
-                            </div>
+                            <img src="{{ asset('assets/img/hse-logo.svg') }}" alt="Logo HSE" width="56" height="56">
                             <div>
                                 <div class="fw-bold fs-4 lh-1">SIM K3</div>
                                 <div class="small text-white-50">Sistem Informasi Manajemen K3</div>
@@ -292,9 +280,7 @@
                     <div style="max-width: 400px; width: 100%;">
 
                         <div class="d-flex d-lg-none align-items-center gap-2 mb-3">
-                            <div class="brand-logo-icon" style="background: var(--hse-green);">
-                                <i class="bi bi-shield-check text-white"></i>
-                            </div>
+                            <img src="{{ asset('assets/img/hse-logo.svg') }}" alt="Logo HSE" width="40" height="40">
                             <div class="fw-bold fs-5" style="color: var(--hse-green);">SIM K3</div>
                         </div>
 
@@ -379,6 +365,8 @@
             this.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
         });
     </script>
+
+    @include('sweetalert::alert')
 
 </body>
 

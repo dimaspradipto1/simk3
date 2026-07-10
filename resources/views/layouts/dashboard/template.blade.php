@@ -10,6 +10,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
+  <link href="{{ asset('assets/img/hse-logo.svg') }}" rel="icon" type="image/svg+xml">
   <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
   <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
@@ -29,13 +30,18 @@
   <!-- Template Main CSS File -->
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.0/css/buttons.bootstrap5.css">
+
 </head>
 
 <body>
-    @include('layouts.dashboard.header')
-    @include('layouts.dashboard.sidebar')
+  @include('layouts.dashboard.header')
+  @include('layouts.dashboard.sidebar')
 
   <main id="main" class="main">
+    @include('sweetalert::alert')
+
     @yield('content')
 
   </main>
@@ -56,6 +62,29 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
+
+  <script>
+    document.addEventListener('click', function (event) {
+      const btn = event.target.closest('.toggle-password');
+      if (!btn) return;
+
+      const input = document.querySelector(btn.dataset.target);
+      if (!input) return;
+
+      const icon = btn.querySelector('i');
+      const isHidden = input.type === 'password';
+
+      input.type = isHidden ? 'text' : 'password';
+      icon.classList.toggle('bi-eye', !isHidden);
+      icon.classList.toggle('bi-eye-slash', isHidden);
+    });
+  </script>
+
+  @stack('script')
 
 </body>
 
