@@ -1,647 +1,286 @@
 @extends('layouts.dashboard.template')
 
 @section('content')
-        <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
+    @php
+        $roleLabels = [
+            'admin' => 'Super Admin / IT',
+            'hsemanger' => 'HSE Manager / Officer',
+            'supervisor' => 'Supervisor / Foreman Lapangan',
+            'karyawan' => 'Pekerja / Karyawan',
+            'kontraktor' => 'Kontraktor / Vendor',
+            'paramedis' => 'Petugas Klinik / Paramedis',
+            'timtanggapdarurat' => 'Tim Tanggap Darurat (ERT)',
+            'direksi' => 'Top Management / Direksi',
+            'auditor' => 'Auditor (Internal/Eksternal)',
+        ];
+        $user = auth()->user();
+    @endphp
+
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
 
-        <!-- Left side columns -->
-        <div class="col-lg-8">
-          <div class="row">
-
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
+        <div class="card mb-3">
+            <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h5 class="mb-1">Selamat datang, {{ $user->name }} 👋</h5>
+                    <span class="badge rounded-pill" style="background:#0b5c3d1a; color:#0b5c3d;">
+                        {{ $roleLabels[$user->role] ?? ucfirst($user->role) }}
+                    </span>
                 </div>
+                <div class="text-muted small">{{ now()->translatedFormat('l, d F Y') }}</div>
+            </div>
+        </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
+        <!-- Role-relevant stat cards -->
+        <div class="row g-3 mb-1">
+            <div class="col-md-4 col-lg-3">
+                <div class="card text-white h-100" style="background:#b6452f; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                    <div class="card-body" style="padding:1.1rem 1.25rem;">
+                        <div class="small mb-2">Laporan Insiden Open</div>
+                        <div class="fs-3 fw-bold mb-1 lh-1">{{ $insidenOpenCount }}</div>
+                        <div class="small opacity-75">Perlu tindak lanjut</div>
                     </div>
-                    <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                </div>
+            </div>
 
+            @if ($access['observasi-bahaya'])
+                <div class="col-md-4 col-lg-3">
+                    <div class="card text-white h-100" style="background:#d1893c; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                        <div class="card-body" style="padding:1.1rem 1.25rem;">
+                            <div class="small mb-2">Observasi Bahaya</div>
+                            <div class="fs-3 fw-bold mb-1 lh-1">{{ $observasiOpenCount }}</div>
+                            <div class="small opacity-75">Status Open</div>
+                        </div>
                     </div>
-                  </div>
                 </div>
+            @endif
 
-              </div>
-            </div><!-- End Sales Card -->
-
-            <!-- Revenue Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+            @if ($access['inpeksik3'])
+                <div class="col-md-4 col-lg-3">
+                    <div class="card text-white h-100" style="background:#3f6ea6; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                        <div class="card-body" style="padding:1.1rem 1.25rem;">
+                            <div class="small mb-2">Inspeksi K3</div>
+                            <div class="fs-3 fw-bold mb-1 lh-1">{{ $inspeksiBelumCount }}</div>
+                            <div class="small opacity-75">Belum selesai</div>
+                        </div>
                     </div>
-                    <div class="ps-3">
-                      <h6>$3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                </div>
+            @endif
 
+            @if ($access['ibpr'])
+                <div class="col-md-4 col-lg-3">
+                    <div class="card text-white h-100" style="background:#7a2020; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                        <div class="card-body" style="padding:1.1rem 1.25rem;">
+                            <div class="small mb-2">Risiko Ekstrem (IBPR)</div>
+                            <div class="fs-3 fw-bold mb-1 lh-1">{{ $risikoEkstrem }}</div>
+                            <div class="small opacity-75">Perlu prioritas</div>
+                        </div>
                     </div>
-                  </div>
                 </div>
+            @endif
 
-              </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
-
-              <div class="card info-card customers-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Customers <span>| This Year</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
+            @if ($access['apd'])
+                <div class="col-md-4 col-lg-3">
+                    <div class="card text-white h-100" style="background:#6c4a9e; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                        <div class="card-body" style="padding:1.1rem 1.25rem;">
+                            <div class="small mb-2">APD Perlu Perhatian</div>
+                            <div class="fs-3 fw-bold mb-1 lh-1">{{ $apdAlertCount }}</div>
+                            <div class="small opacity-75">Kadaluarsa / stok kurang</div>
+                        </div>
                     </div>
-                    <div class="ps-3">
-                      <h6>1244</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+                </div>
+            @endif
 
+            @if ($access['dokumen'])
+                <div class="col-md-4 col-lg-3">
+                    <div class="card text-white h-100" style="background:#4a7ab5; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                        <div class="card-body" style="padding:1.1rem 1.25rem;">
+                            <div class="small mb-2">Dokumen Terlambat Review</div>
+                            <div class="fs-3 fw-bold mb-1 lh-1">{{ $dokumenTerlambatCount }}</div>
+                            <div class="small opacity-75">Perlu direview ulang</div>
+                        </div>
                     </div>
-                  </div>
-
                 </div>
-              </div>
+            @endif
 
-            </div><!-- End Customers Card -->
-
-            <!-- Reports -->
-            <div class="col-12">
-              <div class="card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
+            @if ($access['statistik'])
+                <div class="col-md-4 col-lg-3">
+                    <div class="card text-white h-100" style="background:#4a9d5f; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.12);">
+                        <div class="card-body" style="padding:1.1rem 1.25rem;">
+                            <div class="small mb-2">Compliance Inspeksi</div>
+                            <div class="fs-3 fw-bold mb-1 lh-1">{{ $complianceInspeksi }}%</div>
+                            <div class="small opacity-75">Inspeksi selesai</div>
+                        </div>
+                    </div>
                 </div>
+            @endif
+        </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Reports <span>/Today</span></h5>
+        <div class="row">
+            <!-- Left: recent incidents (visible to everyone) -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Laporan Insiden Terbaru</h5>
 
-                  <!-- Line Chart -->
-                  <div id="reportsChart"></div>
+                        @if ($recentInsiden->isEmpty())
+                            <p class="text-muted mb-0">Belum ada laporan insiden.</p>
+                        @else
+                            <div class="table-responsive">
+                                <table class="table table-borderless align-middle mb-0">
+                                    <thead>
+                                        <tr class="text-muted small text-uppercase">
+                                            <th>No. Laporan</th>
+                                            <th>Jenis</th>
+                                            <th>Lokasi</th>
+                                            <th>Pelapor</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($recentInsiden as $insiden)
+                                            @php
+                                                $badgeClass = \App\DataTables\LaporanInsidenDataTable::STATUS_BADGES[$insiden->status] ?? 'bg-secondary';
+                                                $statusLabel = \App\Models\LaporanInsiden::STATUSES[$insiden->status] ?? ucfirst($insiden->status);
+                                            @endphp
+                                            <tr>
+                                                <td><a href="{{ route('laporan-insiden.show', $insiden) }}">{{ $insiden->no_laporan }}</a></td>
+                                                <td>{{ $insiden->jenis_insiden }}</td>
+                                                <td>{{ $insiden->lokasi }}</td>
+                                                <td>{{ $insiden->user->name ?? '-' }}</td>
+                                                <td><span class="badge rounded-pill {{ $badgeClass }}">{{ $statusLabel }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
 
-                  <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Sales',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Revenue',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Customers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
-                        }
-                      }).render();
-                    });
-                  </script>
-                  <!-- End Line Chart -->
-
+                        <a href="{{ route('laporan-insiden.index') }}" class="btn btn-sm btn-outline-secondary mt-2">
+                            Lihat Semua <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
 
-              </div>
-            </div><!-- End Reports -->
+                <!-- Quick access grid -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Akses Cepat</h5>
+                        <div class="row g-3">
+                            @php
+                                $quickLinks = [
+                                    ['label' => 'Laporan Insiden', 'route' => 'laporan-insiden.index', 'icon' => 'bi-exclamation-triangle', 'color' => '#b6452f', 'show' => true],
+                                    ['label' => 'Observasi Bahaya', 'route' => 'observasi-bahaya.index', 'icon' => 'bi-binoculars', 'color' => '#d1893c', 'show' => $access['observasi-bahaya']],
+                                    ['label' => 'Inspeksi K3', 'route' => 'inpeksik3.index', 'icon' => 'bi-clipboard2-check', 'color' => '#3f6ea6', 'show' => $access['inpeksik3']],
+                                    ['label' => 'Pelatihan HSE', 'route' => 'pelatihanhse.index', 'icon' => 'bi-mortarboard', 'color' => '#6c4a9e', 'show' => $access['pelatihanhse']],
+                                    ['label' => 'IBPR/HIRARC', 'route' => 'ibpr.index', 'icon' => 'bi-file-earmark-text', 'color' => '#7a2020', 'show' => $access['ibpr']],
+                                    ['label' => 'Manajemen APD', 'route' => 'apd.index', 'icon' => 'bi-shield-check', 'color' => '#4a9d5f', 'show' => $access['apd']],
+                                    ['label' => 'Register Dokumen', 'route' => 'dokumen.index', 'icon' => 'bi-folder2-open', 'color' => '#4a7ab5', 'show' => $access['dokumen']],
+                                    ['label' => 'Tanggap Darurat', 'route' => 'tanggap-darurat.index', 'icon' => 'bi-telephone-forward', 'color' => '#d9614f', 'show' => $access['tanggap-darurat']],
+                                    ['label' => 'Statistik HSE', 'route' => 'statistik.index', 'icon' => 'bi-graph-up-arrow', 'color' => '#0b5c3d', 'show' => $access['statistik']],
+                                ];
+                            @endphp
+                            @foreach ($quickLinks as $link)
+                                @if ($link['show'])
+                                    <div class="col-6 col-md-4 col-lg-3">
+                                        <a href="{{ route($link['route']) }}" class="text-decoration-none">
+                                            <div class="d-flex flex-column align-items-center text-center p-3 rounded-3 h-100"
+                                                style="background:{{ $link['color'] }}0d; transition: background .2s ease;"
+                                                onmouseover="this.style.background='{{ $link['color'] }}22'"
+                                                onmouseout="this.style.background='{{ $link['color'] }}0d'">
+                                                <div class="d-flex align-items-center justify-content-center rounded-circle mb-2"
+                                                    style="width:44px; height:44px; background:{{ $link['color'] }}; color:#fff;">
+                                                    <i class="bi {{ $link['icon'] }}"></i>
+                                                </div>
+                                                <div class="small fw-semibold text-dark">{{ $link['label'] }}</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Left side columns -->
 
-            <!-- Recent Sales -->
-            <div class="col-12">
-              <div class="card recent-sales overflow-auto">
+            <!-- Right: role-specific widgets -->
+            <div class="col-lg-4">
 
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
+                @if ($access['pelatihanhse'])
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Pelatihan Mendatang</h5>
+                            @if ($pelatihanMendatang->isEmpty())
+                                <p class="text-muted small mb-0">Tidak ada pelatihan yang dijadwalkan.</p>
+                            @else
+                                @foreach ($pelatihanMendatang as $pelatihan)
+                                    <div class="d-flex justify-content-between align-items-start mb-2 pb-2 border-bottom">
+                                        <div>
+                                            <div class="fw-semibold small">{{ $pelatihan->nama_pelatihan }}</div>
+                                            <div class="text-muted small">{{ $pelatihan->tanggal->format('d M Y') }}</div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                            <a href="{{ route('pelatihanhse.index') }}" class="small">Lihat semua &rarr;</a>
+                        </div>
+                    </div>
+                @endif
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
+                @if ($access['tanggap-darurat'])
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kontak Darurat</h5>
+                            @foreach ($kontakDarurat as $kontak)
+                                @php $color = \App\Models\TanggapDarurat::KATEGORI_COLORS[$kontak->kategori] ?? '#6c757d'; @endphp
+                                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                    <div class="small fw-semibold">{{ $kontak->nama }}</div>
+                                    <div class="fw-bold" style="color: {{ $color }};">{{ $kontak->nomor_telepon }}</div>
+                                </div>
+                            @endforeach
+                            <a href="{{ route('tanggap-darurat.index') }}" class="small">Lihat semua &rarr;</a>
+                        </div>
+                    </div>
+                @endif
+
+                @if ($access['statistik'])
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Statistik &amp; Analisis Risiko</h5>
+                            <p class="small text-muted">Lihat FR/SR/IR, compliance inspeksi, dan distribusi risiko
+                                secara lengkap.</p>
+                            <a href="{{ route('statistik.index') }}" class="btn btn-sm btn-hse-outline"
+                                style="border:1px solid #0b5c3d; color:#0b5c3d;">
+                                <i class="bi bi-graph-up-arrow"></i> Buka Statistik HSE
+                            </a>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ringkasan</h5>
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span class="text-muted">Karyawan Aktif</span>
+                            <span class="fw-semibold">{{ $totalKaryawanAktif }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">Insiden Open</span>
+                            <span class="fw-semibold">{{ $insidenOpenCount }}</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Recent Sales <span>| Today</span></h5>
+            </div><!-- End Right side columns -->
+        </div>
 
-                  <table class="table table-borderless datatable">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#">#2457</a></th>
-                        <td>Brandon Jacob</td>
-                        <td><a href="#" class="text-primary">At praesentium minu</a></td>
-                        <td>$64</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2147</a></th>
-                        <td>Bridie Kessler</td>
-                        <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
-                        <td>$47</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2049</a></th>
-                        <td>Ashleigh Langosh</td>
-                        <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
-                        <td>$147</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Angus Grady</td>
-                        <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
-                        <td>$67</td>
-                        <td><span class="badge bg-danger">Rejected</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Raheem Lehner</td>
-                        <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
-                        <td>$165</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-
-              </div>
-            </div><!-- End Recent Sales -->
-
-            <!-- Top Selling -->
-            <div class="col-12">
-              <div class="card top-selling overflow-auto">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body pb-0">
-                  <h5 class="card-title">Top Selling <span>| Today</span></h5>
-
-                  <table class="table table-borderless">
-                    <thead>
-                      <tr>
-                        <th scope="col">Preview</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Sold</th>
-                        <th scope="col">Revenue</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>
-                        <td>$64</td>
-                        <td class="fw-bold">124</td>
-                        <td>$5,828</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>
-                        <td>$46</td>
-                        <td class="fw-bold">98</td>
-                        <td>$4,508</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>
-                        <td>$59</td>
-                        <td class="fw-bold">74</td>
-                        <td>$4,366</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>
-                        <td>$32</td>
-                        <td class="fw-bold">63</td>
-                        <td>$2,016</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>
-                        <td>$79</td>
-                        <td class="fw-bold">41</td>
-                        <td>$3,239</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-
-              </div>
-            </div><!-- End Top Selling -->
-
-          </div>
-        </div><!-- End Left side columns -->
-
-        <!-- Right side columns -->
-        <div class="col-lg-4">
-
-          <!-- Recent Activity -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body">
-              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
-
-              <div class="activity">
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">32 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">56 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 hrs</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">1 day</div>
-                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                  <div class="activity-content">
-                    Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                  <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">4 weeks</div>
-                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                  <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                  </div>
-                </div><!-- End activity item-->
-
-              </div>
-
-            </div>
-          </div><!-- End Recent Activity -->
-
-          <!-- Budget Report -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
-
-              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                    legend: {
-                      data: ['Allocated Budget', 'Actual Spending']
-                    },
-                    radar: {
-                      // shape: 'circle',
-                      indicator: [{
-                          name: 'Sales',
-                          max: 6500
-                        },
-                        {
-                          name: 'Administration',
-                          max: 16000
-                        },
-                        {
-                          name: 'Information Technology',
-                          max: 30000
-                        },
-                        {
-                          name: 'Customer Support',
-                          max: 38000
-                        },
-                        {
-                          name: 'Development',
-                          max: 52000
-                        },
-                        {
-                          name: 'Marketing',
-                          max: 25000
-                        }
-                      ]
-                    },
-                    series: [{
-                      name: 'Budget vs spending',
-                      type: 'radar',
-                      data: [{
-                          value: [4200, 3000, 20000, 35000, 50000, 18000],
-                          name: 'Allocated Budget'
-                        },
-                        {
-                          value: [5000, 14000, 28000, 26000, 42000, 21000],
-                          name: 'Actual Spending'
-                        }
-                      ]
-                    }]
-                  });
-                });
-              </script>
-
-            </div>
-          </div><!-- End Budget Report -->
-
-          <!-- Website Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">Website Traffic <span>| Today</span></h5>
-
-              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  echarts.init(document.querySelector("#trafficChart")).setOption({
-                    tooltip: {
-                      trigger: 'item'
-                    },
-                    legend: {
-                      top: '5%',
-                      left: 'center'
-                    },
-                    series: [{
-                      name: 'Access From',
-                      type: 'pie',
-                      radius: ['40%', '70%'],
-                      avoidLabelOverlap: false,
-                      label: {
-                        show: false,
-                        position: 'center'
-                      },
-                      emphasis: {
-                        label: {
-                          show: true,
-                          fontSize: '18',
-                          fontWeight: 'bold'
-                        }
-                      },
-                      labelLine: {
-                        show: false
-                      },
-                      data: [{
-                          value: 1048,
-                          name: 'Search Engine'
-                        },
-                        {
-                          value: 735,
-                          name: 'Direct'
-                        },
-                        {
-                          value: 580,
-                          name: 'Email'
-                        },
-                        {
-                          value: 484,
-                          name: 'Union Ads'
-                        },
-                        {
-                          value: 300,
-                          name: 'Video Ads'
-                        }
-                      ]
-                    }]
-                  });
-                });
-              </script>
-
-            </div>
-          </div><!-- End Website Traffic -->
-
-          <!-- News & Updates Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
-
-              <div class="news">
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                  <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-2.jpg" alt="">
-                  <h4><a href="#">Quidem autem et impedit</a></h4>
-                  <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-3.jpg" alt="">
-                  <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
-                  <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-4.jpg" alt="">
-                  <h4><a href="#">Laborum corporis quo dara net para</a></h4>
-                  <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-5.jpg" alt="">
-                  <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
-                  <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
-                </div>
-
-              </div><!-- End sidebar recent posts-->
-
-            </div>
-          </div><!-- End News & Updates -->
-
-        </div><!-- End Right side columns -->
-
-      </div>
     </section>
 @endsection
