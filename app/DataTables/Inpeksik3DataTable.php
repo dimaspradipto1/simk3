@@ -68,6 +68,7 @@ class Inpeksik3DataTable extends DataTable
             ->setTableId('inpeksik3-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->scrollX()
             ->orderBy(1, 'desc')
             ->selectStyleSingle()
             ->buttons([

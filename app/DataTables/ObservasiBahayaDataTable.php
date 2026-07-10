@@ -80,6 +80,7 @@ class ObservasiBahayaDataTable extends DataTable
             ->setTableId('observasi-bahaya-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->scrollX()
             ->orderBy(1, 'desc')
             ->selectStyleSingle()
             ->buttons([

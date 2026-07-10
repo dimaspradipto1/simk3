@@ -3,7 +3,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center">
-        <img src="{{ asset('assets/img/hse-logo.svg') }}" alt="Logo HSE">
+        <img src="{{ asset('assets/img/hse.png') }}" alt="Logo HSE">
         <span class="d-none d-lg-block">SIM K3</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>

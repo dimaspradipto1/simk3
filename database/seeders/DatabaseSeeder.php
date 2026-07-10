@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             ObservasiBahayaSeeder::class,
             Inpeksik3Seeder::class,
             PelatihanhseSeeder::class,
+            IbprSeeder::class,
+            ApdSeeder::class,
+            DokumenSeeder::class,
         ]);
     }
 }

@@ -79,6 +79,7 @@ class LaporanInsidenDataTable extends DataTable
             ->setTableId('laporan-insiden-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->scrollX()
             ->orderBy(1, 'desc')
             ->selectStyleSingle()
             ->buttons([

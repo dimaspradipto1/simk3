@@ -1,13 +1,18 @@
 <?php
 
+use App\Http\Controllers\ApdController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\DokumenController;
+use App\Http\Controllers\IbprController;
 use App\Http\Controllers\Inpeksik3Controller;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanInsidenController;
 use App\Http\Controllers\ObservasiBahayaController;
 use App\Http\Controllers\PelatihanhseController;
+use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\TanggapDaruratController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +43,14 @@ Route::middleware('auth', 'checkrole')->group(function () {
     Route::resource('inpeksik3', Inpeksik3Controller::class)->except(['show']);
 
     Route::resource('pelatihanhse', PelatihanhseController::class);
+
+    Route::resource('ibpr', IbprController::class)->except(['show']);
+
+    Route::resource('apd', ApdController::class)->except(['show']);
+
+    Route::resource('dokumen', DokumenController::class)->only(['index', 'store', 'show', 'update', 'destroy'])->parameters(['dokumen' => 'dokumen']);
+
+    Route::resource('tanggap-darurat', TanggapDaruratController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('/statistik-hse', [StatistikController::class, 'index'])->name('statistik.index');
 });

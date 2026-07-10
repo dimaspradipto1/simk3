@@ -81,6 +81,7 @@ class UserDataTable extends DataTable
             ->setTableId('user-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->scrollX()
             ->orderBy(1)
             ->selectStyleSingle()
             ->buttons([

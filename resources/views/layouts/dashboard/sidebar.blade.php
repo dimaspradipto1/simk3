@@ -44,22 +44,22 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
+            <a href="{{ route('ibpr.index') }}">
               <i class="bi bi-circle"></i><span>IBPR/HIRARC</span>
             </a>
           </li>
           <li>
-            <a href="forms-layouts.html">
+            <a href="{{ route('apd.index') }}">
               <i class="bi bi-circle"></i><span>Manajemen APD</span>
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="{{ route('dokumen.index') }}">
               <i class="bi bi-circle"></i><span>Register Dokumen</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{{ route('tanggap-darurat.index') }}">
               <i class="bi bi-circle"></i><span>Tanggap Darurat</span>
             </a>
           </li>
@@ -72,7 +72,7 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tables-general.html">
+            <a href="{{ route('statistik.index') }}">
               <i class="bi bi-circle"></i><span>Statistik HSE</span>
             </a>
           </li>

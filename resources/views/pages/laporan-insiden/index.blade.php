@@ -24,9 +24,7 @@
                             <i class="bi bi-plus-lg"></i> Buat Laporan
                         </a>
 
-                        <div class="table-responsive">
-                            {{ $dataTable->table(['class' => 'table table-striped table-bordered align-middle', 'style' => 'width:100%']) }}
-                        </div>
+                        {{ $dataTable->table(['class' => 'table table-striped table-bordered align-middle', 'style' => 'width:100%']) }}
                     </div>
                 </div>
             </div>

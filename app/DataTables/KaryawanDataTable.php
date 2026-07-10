@@ -61,6 +61,7 @@ class KaryawanDataTable extends DataTable
             ->setTableId('karyawan-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->scrollX()
             ->orderBy(1)
             ->selectStyleSingle()
             ->buttons([

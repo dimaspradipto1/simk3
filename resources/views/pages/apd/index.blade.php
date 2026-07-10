@@ -1,14 +1,14 @@
 @extends('layouts.dashboard.template')
 
-@section('title', 'Data Departemen')
+@section('title', 'Manajemen APD')
 
 @section('content')
     <div class="pagetitle">
-        <h1>Data Departemen</h1>
+        <h1>Manajemen APD</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item active">Data Departemen</li>
+                <li class="breadcrumb-item active">Manajemen APD</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -18,10 +18,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Daftar Departemen</h5>
+                        <h5 class="card-title">Daftar APD</h5>
 
-                        <a href="{{ route('departemen.create') }}" class="btn btn-primary btn-sm mb-3">
-                            <i class="bi bi-plus-lg"></i> Tambah Departemen
+                        <a href="{{ route('apd.create') }}" class="btn btn-primary btn-sm mb-3">
+                            <i class="bi bi-plus-lg"></i> Tambah APD
                         </a>
 
                         {{ $dataTable->table(['class' => 'table table-striped table-bordered align-middle', 'style' => 'width:100%']) }}

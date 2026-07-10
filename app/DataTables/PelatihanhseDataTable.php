@@ -74,6 +74,7 @@ class PelatihanhseDataTable extends DataTable
             ->setTableId('pelatihanhse-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->scrollX()
             ->orderBy(1, 'desc')
             ->selectStyleSingle()
             ->buttons([
